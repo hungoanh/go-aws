@@ -27,6 +27,20 @@ func main() {
 	if param != nil {
 		fmt.Printf("parameter value is: %s\n", *param.Parameter.Value)
 	}
+
+	var paraminput = make([]*string, 0)
+	n := "north"
+	paraminput = append(paraminput, &n)
+	s := "south"
+	paraminput = append(paraminput, &s)
+
+	params, err := svc.GetParameters(&ssm.GetParametersInput{
+		Names: paraminput,
+	})
+
+	for _, p := range params.Parameters {
+		fmt.Printf("parameter value is: %s\n", *p.Value)
+	}
 }
 
 func exitErrorf(msg string, args ...interface{}) {
