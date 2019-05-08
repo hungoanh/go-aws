@@ -1,22 +1,23 @@
 package main
 
 import (
-	"github.com/aws/aws-sdk-go/service/ssm"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/aws"
-	"os"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ssm"
+	"os"
 )
 
 func main() {
 	sess, err := session.NewSessionWithOptions(session.Options{
-		Profile: os.Getenv("AWS_PERSONAL_SECONDARY_PROFILE"),
 		Config: aws.Config{
-			Region: aws.String("us-east-1"),
+			Region:      aws.String(os.Getenv("AWS_TEST_REGION")),
+			Credentials: credentials.NewSharedCredentials("", os.Getenv("AWS_TEST_PROFILE")),
 		},
 	})
-    if err != nil {
-    	return
+	if err != nil {
+		return
 	}
 	svc := ssm.New(sess)
 
